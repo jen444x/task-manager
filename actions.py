@@ -10,21 +10,27 @@ def add_task(tasks, task):
 
     return True
 
+# Find task
+def lookup(tasks, task):
+    """ Find Task """
+    # check it exists and save map
+    task_lowered = task.lower()
+    for curr_task in tasks:       
+        if curr_task['name_lower'] == task_lowered:
+            return curr_task
+
+    return None
+
 # delete task
 def delete_task(tasks, task):
     """ Delete task """
 
-    # check it exists and save map
-    found = False
-    for curr_task in tasks:       
-        if curr_task['name_lower'] == task.lower():
-            target_task = curr_task
-            found = True
+    # check it exists and save dict
+    target_task = lookup(tasks, task)
 
-    # Notify if wan't found
-    if found == False:
+    if not target_task:
         return False
-
+    
     # Remove if it was found
     tasks.remove(target_task)   
     return True         
@@ -33,19 +39,20 @@ def delete_task(tasks, task):
 def edit_task(tasks, task):
     """ Edit task """
     
-    # check it exists 
-    for curr_task in tasks:
-        if curr_task['name_lower'] == task.lower():
-            # Get new task name
-            new_task_name = input("\nPlease enter new task name: ")
+    # check it exists and save dict
+    target_task = lookup(tasks, task)
 
-            # Edit data
-            curr_task['name'] = new_task_name
-            curr_task['name_lower'] = new_task_name.lower()
-            return True
+    if not target_task:
+        return False
+    
+    # Get new task name
+    new_task_name = input("\nPlease enter new task name: ")
+    
+    # Edit data
+    target_task['name'] = new_task_name
+    target_task['name_lower'] = new_task_name.lower()
 
-   # Return false if wasn't found
-    return False
+    return True
 
 # print tasks
 def show_tasks(tasks):
