@@ -25,22 +25,20 @@ while True:
     if user_input == "q":
         break
     
-    elif user_input == "a":
+    elif user_input == "a":        
         new_task = input("\nPlease enter new task: ")
         added = add_task(tasks, new_task)
         if added:
             print(f"\nTask '{new_task}' has been successfully added.")
         else:
-            print(f"\nERROR: Task '{new_task}' was not successfully added.")
+            print(f"\nTask '{new_task}' was not successfully added.")
 
     elif user_input == "e":
         to_edit = input("\nPlease enter the name of the task you would like to" \
-        " edit: ")
+        " edit: \n")
         edited = edit_task(tasks, to_edit)
-        if edited:
-            print(f"\nTask '{to_edit}' was successfully edited.")
-        else:
-            print("\nTask was not found.")
+        if not edited:
+            print("\nTask was not edited.")
 
     elif user_input == "d":
         to_delete = input("\nPlease enter the name of the task you would like to" \
@@ -56,5 +54,5 @@ while True:
         
     else:
         print("Invalid response. Please try again")
-    print(linesplit)
+    print(f"\n{linesplit}\n")
 
