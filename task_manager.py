@@ -1,4 +1,4 @@
-from actions import add_task, edit_task, delete_task, show_tasks, store_tasks
+from actions import add_task, edit_task, delete_task, show_tasks, store_tasks, get_tasks
 
 # Intro
 linesplit = "--------------------------------"
@@ -8,7 +8,7 @@ print(f"\n{linesplit}\n{intro.upper()}\n{linesplit}")
 # List that holds task instances
 tasks = []
 # Add existing tasks if any
-# get_tasks(tasks)
+get_tasks(tasks)
 
 
 # Loop until user exits

@@ -298,24 +298,82 @@ def store_tasks(tasks):
     """ it is good practice to use the with keyword when dealing with file objects. 
     The advantage is that the file is properly closed after its suite finishes, 
     even if an exception is raised at some point."""
-    with open('user_tasks.py', 'w') as f:
+    with open('user_tasks.txt', 'w') as f:
         # write to file
         f.write(tasks_str_joined)
+
+def create_task_instance(name, description, due_date):
+    task = (name, description, due_date)
+
+    return task
 
 # Download tasks from file
 def get_tasks(tasks):
     # Read task attributes from file
-    with open('user_tasks.py', 'r') as f:
-        # read from file
-        tasks_dict = f.read()
+    with open('user_tasks.txt', 'r') as f:
+        for line in f:
+            # print(f"line: {line}")
+           
+            # remove {} and \n on outside
+            line = line.strip('{}\n')
+            # print(f"Removed parantheses: {line}\n")
 
-    # Turn attributes into class and store in list
-    for task in tasks_dict:
-        print(task)
+            # Separate attributes
+            attributes = line.split(',')
+            # print(f"Seperated attributes: {attributes}\n")
+
+            # Get key and value pairs
+            # Create new dict to hold them in
+            new_instance = {}
+            for attribute in attributes:
+                # print(f"Got key val pair: {attribute}\n")
+                # store seperately
+                key, val = attribute.split(':')
+                # print(f"key: {key}, val: {val}")
+
+                # if name_lowered attribute, skip
+                if 'name_lowered' in key:
+                    continue 
+
+                # remove extra quotes
+                key = key.strip(" '")
+                val = val.strip(" '")
+                # print(f"after strip key: {key}, val: {val}\n")
+
+                # add to dict
+                new_instance[key] = val
+
+            # print(f"created new_instance dict: {new_instance}")
+
+            # Create obj
+            task = Task(**new_instance)
+
+            # Add to list
+            tasks.append(task)
+        # for task in tasks:
+            # print(task.__dict__)
+
+        #     print(f"created new obj: {task.__dict__}")
+
+
+                
+            
+
+        #     print()
+        # print()
+    
+
+    # print(len(tasks_dict))
+
+
+
+    # # Turn attributes into class and store in list
+    # for task in tasks_dict:
+    #     print(task)
 
 
     
 
-tasks = []
-get_tasks(tasks)
-# tasks = (get_tasks(tasks))
+# tasks = []
+# get_tasks(tasks)
+# # tasks = (get_tasks(tasks))
