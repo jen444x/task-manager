@@ -1,3 +1,5 @@
+import json
+
 from task import Task
 
 def valid_day(day, month, year):
@@ -102,8 +104,6 @@ def get_user_due_date():
         "Make sure to use the following format MM/DD/YY: ")
 
         valid_date = is_valid_date(due_date)
-
-    print(valid_date)
     
     return due_date
 
@@ -199,8 +199,16 @@ def edit_description(task):
 def edit_due_date(task):
     """Edit task due_date"""
     old_due_date = task.due_date
-    # Get new task due date
-    new_due_date = input("\nPlease enter new task due date: ")
+
+    new_due_date = input("Please enter new due date (MM/DD/YYYY): ")
+
+    valid_date = is_valid_date(new_due_date)
+
+    while not valid_date:
+        new_due_date = input("Due date was invalid. " \
+        "Make sure to use the following format MM/DD/YY: ")
+
+        valid_date = is_valid_date(new_due_date)
     
     # Edit data
     task.due_date = new_due_date 
@@ -265,4 +273,49 @@ def show_tasks(tasks):
         if task.due_date:
             print(f"   Due: {task.due_date}")
 
-get_user_due_date()
+def to_dict(task):
+    """Get class instance as dictionary"""
+    """ Every Python object has a __dict__ attribute that stores its attributes 
+    in a dictionary form. By accessing this attribute, you can quickly convert 
+    the object's data into a dictionary, which can then be serialized into a 
+    JSON string using json.dumps(). This method works well for simple objects 
+    but doesn’t give you control over how the object is represented in JSON."""
+
+
+    # return dict attribute
+    return task.__dict__
+
+# Upload tasks to file
+def store_tasks(tasks):
+    # Get class dict
+    tasks_dict = map(to_dict, tasks)
+    # Turn into string
+    tasks_str = list(map(str, tasks_dict))
+    # Turn into a single str
+    tasks_str_joined = "\n".join(tasks_str)
+    
+    # save to file
+    """ it is good practice to use the with keyword when dealing with file objects. 
+    The advantage is that the file is properly closed after its suite finishes, 
+    even if an exception is raised at some point."""
+    with open('user_tasks.py', 'w') as f:
+        # write to file
+        f.write(tasks_str_joined)
+
+# Download tasks from file
+def get_tasks(tasks):
+    # Read task attributes from file
+    with open('user_tasks.py', 'r') as f:
+        # read from file
+        tasks_dict = f.read()
+
+    # Turn attributes into class and store in list
+    for task in tasks_dict:
+        print(task)
+
+
+    
+
+tasks = []
+get_tasks(tasks)
+# tasks = (get_tasks(tasks))

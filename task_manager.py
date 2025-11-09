@@ -1,14 +1,15 @@
-from actions import add_task, edit_task, delete_task, show_tasks
+from actions import add_task, edit_task, delete_task, show_tasks, store_tasks
 
 # Intro
 linesplit = "--------------------------------"
 intro = "Welcome to your task manager"
 print(f"\n{linesplit}\n{intro.upper()}\n{linesplit}")
 
-# Map to hold individual task
-# will save task name in lower for lookup and regular as user inputted
-# List to hold all tasks
+# List that holds task instances
 tasks = []
+# Add existing tasks if any
+# get_tasks(tasks)
+
 
 # Loop until user exits
 while True:
@@ -23,6 +24,8 @@ while True:
     user_input = input("Action: ").lower().strip()
 
     if user_input == "q":
+        store_tasks(tasks)
+
         break
     
     elif user_input == "a":        
