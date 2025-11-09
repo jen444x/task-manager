@@ -1,4 +1,4 @@
-from actions import add_task, edit_task, delete_task, show_tasks
+from actions import delete_task
 from task_manager import TaskManager
 
 # Intro
@@ -13,7 +13,7 @@ tasks = tm.task_list
 # Loop until user exits
 while True:
     print(
-        f"\nOptions:\n\n"
+        f"Options:\n\n"
         "A - Add task\n"
         "E - Edit task\n"
         "D - Delete task\n"
@@ -27,9 +27,11 @@ while True:
         tm.save_data()
         break
     
-    elif user_input == "a":        
+    elif user_input == "a":   
         new_task = input("\nPlease enter new task: ")
-        added = add_task(tasks, new_task)
+
+        added = tm.add_task(new_task)
+
         if added:
             print(f"\nTask '{new_task}' has been successfully added.")
         else:
@@ -38,7 +40,9 @@ while True:
     elif user_input == "e":
         to_edit = input("\nPlease enter the name of the task you would like to" \
         " edit: \n")
-        edited = edit_task(tasks, to_edit)
+
+        edited = tm.edit_task(to_edit)
+        
         if not edited:
             print("\nTask was not edited.")
 
@@ -52,7 +56,7 @@ while True:
             print("\nTask was not found.")
 
     elif user_input == "s":
-        show_tasks(tasks)
+        tm.show_tasks()
         
     else:
         print("Invalid response. Please try again")

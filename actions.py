@@ -1,5 +1,3 @@
-from task import Task
-
 def valid_day(day, month, year):
     """ Check if day is valid """
 
@@ -105,42 +103,6 @@ def get_user_due_date():
     
     return due_date
 
-# create new task
-def add_task(tasks, task):
-    """ Add task to set of tasks """
-
-    description = ""
-    due_date = ""
-
-    # Option to add aditional information
-    user_input = input("\nWould you like to include any of the information to your task?\n\n" \
-    "a - Add description\n" \
-    "b - Add due date\n" \
-    "c - Add description and due date\n" \
-    "d - Do not include any additional information.\n").lower().strip()
-    print()
-
-    if user_input == 'a':
-        description = input("Please enter description: ")
-    elif user_input == 'b':
-        due_date = get_user_due_date()
-    elif user_input == 'c':
-        description = input("Please enter description: ")
-        due_date = get_user_due_date()
-    elif user_input == 'd':
-        pass
-    else:
-        print("\nInvalid input.", end="")
-        return False
-    
-    # Create a new task object
-    new_task = Task(task, description, due_date)
-
-    # Add object to list
-    tasks.append(new_task)
-
-    return True
-
 # Find task
 def lookup(tasks, task):
     """ Find Task """
@@ -213,61 +175,3 @@ def edit_due_date(task):
 
     # notify user
     print(f"\nTask due date was changed from '{old_due_date}' to '{new_due_date}'.")  
-
-# edit task
-def edit_task(tasks, task):
-    """ Edit task """
-    # See what they want to edit
-    attribute_to_edit = input("\nPlease chose what you would like to edit:\n\n" \
-    "a - Name\n" \
-    "b - Description\n" \
-    "c - Due date\n\n" \
-    "d - Return\n\n" \
-        ).lower().strip()
-
-    if attribute_to_edit == "d":
-        return False
-    
-    # check it exists, if not notify user
-    target_task = lookup(tasks, task)
-    if not target_task:
-        print("\nTask was not found.")
-        return False
-    
-    # if it does exist, ask user what to edit
-    if attribute_to_edit == "a":
-        edit_name(target_task)
-    elif attribute_to_edit == "b":
-        edit_description(target_task)
-    elif attribute_to_edit == "c":
-        edit_due_date(target_task)
-
-    return True
-
-# print tasks
-def show_tasks(tasks):
-    """ Show all tasks """
-
-    print("\nCurrent tasks:")
-    for i, task in enumerate(tasks):
-        # print name
-        print(f"{i+1}. {task.name}", end="")
-        
-        # print description if any
-        if task.description:
-            print(f" - {task.description}")
-        # if no description was added
-        else:
-            # if due date was added 
-            if task.due_date:
-                # new line to format 
-                print()
-            # if due date was not added
-            else:
-                # we dont need to check the rest
-                print()
-                continue
-
-        if task.due_date:
-            print(f"   Due: {task.due_date}")
-
