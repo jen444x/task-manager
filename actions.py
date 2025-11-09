@@ -274,7 +274,8 @@ def show_tasks(tasks):
             print(f"   Due: {task.due_date}")
 
 def to_dict(task):
-    """Get class instance as dictionary"""
+    """Get class instance as dictionary then string"""
+
     """ Every Python object has a __dict__ attribute that stores its attributes 
     in a dictionary form. By accessing this attribute, you can quickly convert 
     the object's data into a dictionary, which can then be serialized into a 
@@ -287,93 +288,31 @@ def to_dict(task):
 
 # Upload tasks to file
 def store_tasks(tasks):
-    # Get class dict
-    tasks_dict = map(to_dict, tasks)
-    # Turn into string
-    tasks_str = list(map(str, tasks_dict))
-    # Turn into a single str
-    tasks_str_joined = "\n".join(tasks_str)
-    
-    # save to file
-    """ it is good practice to use the with keyword when dealing with file objects. 
-    The advantage is that the file is properly closed after its suite finishes, 
-    even if an exception is raised at some point."""
-    with open('user_tasks.txt', 'w') as f:
+    """ Save tasks to file """
+
+    # Get list of dicts
+    tasks_dict = list(map(to_dict, tasks))
+
+    # turn into json
+    tasks_json = json.dumps(tasks_dict, indent=4)
+
+    with open('user_tasks.json', 'w') as f:
         # write to file
-        f.write(tasks_str_joined)
-
-def create_task_instance(name, description, due_date):
-    task = (name, description, due_date)
-
-    return task
+        f.write(tasks_json)
+    
 
 # Download tasks from file
 def get_tasks(tasks):
-    # Read task attributes from file
-    with open('user_tasks.txt', 'r') as f:
-        for line in f:
-            # print(f"line: {line}")
-           
-            # remove {} and \n on outside
-            line = line.strip('{}\n')
-            # print(f"Removed parantheses: {line}\n")
-
-            # Separate attributes
-            attributes = line.split(',')
-            # print(f"Seperated attributes: {attributes}\n")
-
-            # Get key and value pairs
-            # Create new dict to hold them in
-            new_instance = {}
-            for attribute in attributes:
-                # print(f"Got key val pair: {attribute}\n")
-                # store seperately
-                key, val = attribute.split(':')
-                # print(f"key: {key}, val: {val}")
-
-                # if name_lowered attribute, skip
-                if 'name_lowered' in key:
-                    continue 
-
-                # remove extra quotes
-                key = key.strip(" '")
-                val = val.strip(" '")
-                # print(f"after strip key: {key}, val: {val}\n")
-
-                # add to dict
-                new_instance[key] = val
-
-            # print(f"created new_instance dict: {new_instance}")
-
-            # Create obj
-            task = Task(**new_instance)
-
-            # Add to list
-            tasks.append(task)
-        # for task in tasks:
-            # print(task.__dict__)
-
-        #     print(f"created new obj: {task.__dict__}")
-
-
-                
-            
-
-        #     print()
-        # print()
-    
-
-    # print(len(tasks_dict))
-
-
-
-    # # Turn attributes into class and store in list
-    # for task in tasks_dict:
-    #     print(task)
-
-
-    
-
-# tasks = []
-# get_tasks(tasks)
-# # tasks = (get_tasks(tasks))
+    """ Add stored tasks to list """
+    with open('user_tasks.json', 'r') as f:
+        # Read file
+        contents = f.read()
+        
+    # Turn into py object
+    obj = json.loads(contents)
+        
+    for o in obj:
+        # Create new class instances
+        task = Task(o['name'], o['description'], o['due_date'])
+        # Add to list
+        tasks.append(task)
