@@ -1,7 +1,6 @@
 from task import Task
 from db import get_tasks, store_tasks
-
-from actions import get_user_due_date, lookup, edit_description, edit_due_date, edit_name
+from date import get_user_due_date
 
 class TaskManager:
     """ Models task manager """
@@ -55,7 +54,18 @@ class TaskManager:
         self.task_list.append(new_task)
 
         return True
+    
+    # Find task
+    def lookup(self, task):
+        """ Find Task """
 
+        # check it exists and save map
+        task_lowered = task.lower()
+        for task_instance in self.task_list:       
+            if task_instance.name_lowered == task_lowered:
+                return task_instance
+
+        return None
 
     # edit task
     def edit_task(self, task):
@@ -82,18 +92,19 @@ class TaskManager:
 
             # check it exists, if not notify user
             if not target_task:
-                target_task = lookup(self.task_list, task)
+                target_task = self.lookup(self.task_list, task)
                 if not target_task:
                     print("\nTask was not found.")
                     return False
         
             # if it does exist, ask user what to edit
             if user_input == "a":
-                edit_name(target_task)
+                target_task.edit_name()
             elif user_input == "b":
-                edit_description(target_task)
+                target_task.edit_description()
             elif user_input == "c":
-                edit_due_date(target_task)
+                target_task.edit_due_date()
+                
 
             # Ask user if they want to edit more
             ask_again = input("Did you want to make any more changes? (y/n): ").lower().strip()
@@ -132,4 +143,19 @@ class TaskManager:
             if task.due_date:
                 print(f"   Due: {task.due_date}")
 
+    # delete task
+    def delete_task(self, task):
+        """ Delete task """
+
+        # check it exists and save dict
+        target_task = self.lookup(self.task_list, task)
+
+        if not target_task:
+            return False
         
+        # Remove from list
+        self.task_list.remove(target_task)   
+        # Remove reference
+        del target_task
+
+        return True 

@@ -1,4 +1,3 @@
-from actions import delete_task
 from task_manager import TaskManager
 
 # Intro
@@ -49,7 +48,8 @@ while True:
     elif user_input == "d":
         to_delete = input("\nPlease enter the name of the task you would like to" \
         " delete: ")
-        deleted = delete_task(tasks, to_delete)
+        deleted = tm.delete_task(to_delete)
+
         if deleted:
             print(f"\nTask '{to_delete}' was successfully deleted.")
         else:
