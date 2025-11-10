@@ -7,7 +7,7 @@ print(f"\n{linesplit}\n{intro.upper()}\n{linesplit}")
 
 # Initialize task manager
 tm = TaskManager()
-tasks = tm.task_list
+dict = tm.tasks_dict
 
 # Loop until user exits
 while True:

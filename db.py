@@ -3,7 +3,7 @@ import json
 from task import Task
 
 # Download tasks from file
-def get_tasks(tasks):
+def get_tasks(lst, dict):
     """ Add stored tasks to list """
 
     filename = 'user_tasks.json'
@@ -16,13 +16,16 @@ def get_tasks(tasks):
         return
 
     # Turn into py object
-    dicts = json.loads(contents)
+    tasks = json.loads(contents)
         
-    for dict in dicts:
+    for task in tasks:
         # Create new class instances
-        task = Task(dict['name'], dict['description'], dict['due_date'])
+        task_instance = Task(task['name'], task['description'], task['due_date'])
+        
         # Add to list
-        tasks.append(task)
+        lst.append(task_instance)
+        # Add to dict
+        dict[(task_instance.name).lower()] = task_instance
 
 # Upload tasks to file
 def store_tasks(tasks):
