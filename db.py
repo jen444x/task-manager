@@ -20,12 +20,12 @@ def get_tasks(lst, dict):
         
     for task in tasks:
         # Create new class instances
-        task_instance = Task(task['name'], task['description'], task['due_date'])
+        task_instance = Task(**task)
         
         # Add to list
         lst.append(task_instance)
         # Add to dict
-        dict[(task_instance.name).lower()] = task_instance
+        dict[(task_instance.name).lower().strip()] = task_instance
 
 # Upload tasks to file
 def store_tasks(tasks):
@@ -33,6 +33,8 @@ def store_tasks(tasks):
 
     # Get list of dicts
     tasks_dict = list(map(Task.get_dict, tasks))
+
+    print(tasks_dict)
 
     # turn into json
     tasks_json = json.dumps(tasks_dict, indent=4)

@@ -11,22 +11,16 @@ dict = tm.tasks_dict
 
 # Loop until user exits
 while True:
-    print(
-        f"Options:\n"
-        "A - Add task\n"
-        "E - Edit task\n"
-        "D - Delete task\n"
-        "S - Show all tasks\n\n"
-        "Q - Quit\n"
+    print(f"Options:\n"
+        "a - Add task\n"
+        "e - Edit task\n"
+        "d - Delete task\n"
+        "s - Show task(s)\n\n"
+        "q - Quit\n"
     )
-    user_input = input("Please make a selection: ").lower().strip()
-
-    if user_input == "q":
-        # Store tasks when program ends
-        tm.save_data()
-        break
+    user_input = input("Choice: ").lower().strip()
     
-    elif user_input == "a":   
+    if user_input == "a":   
         new_task = input("\nPlease enter new task: ")
 
         added = tm.add_task(new_task)
@@ -38,7 +32,7 @@ while True:
 
     elif user_input == "e":
         to_edit = input("\nPlease enter the name of the task you would like to" \
-        " edit: \n")
+        " edit: ")
         tm.edit_task(to_edit)
 
     elif user_input == "d":
@@ -47,7 +41,56 @@ while True:
         tm.delete_task(to_delete)
 
     elif user_input == "s":
-        tm.show_tasks()
+        # Ask user how to list tasks
+        print(f"\nOptions:\n"
+        "a - Show all tasks\n"
+        "o - Show one task\n"
+        "d - Show tasks based on date\n\n"
+        "q - Return \n"
+        )
+
+        view = input("How would you like your tasks listed: ").lower().strip()
+        if view == 'a':
+            tm.show_tasks()
+        elif view == 'o':
+            to_show = input("\nPlease enter the name of the task you would like to" \
+            " see: ")
+            tm.show_task(to_show)
+        # elif view == 'd':
+        #     print(f"Options:\n"
+        #     "a - Due today\n"
+        #     "o - Overdue\n"
+        #     "f - Future due\n\n"
+        #     "q - Return \n"
+        #     )
+
+        #     due = input("What tasks would you like to see: ").lower().strip()
+        #     if due == 'a':
+        #         tm.show_tasks()
+        #     # elif due == 'o':
+        #     #     to_show = input("\nPlease enter the name of the task you would like to" \
+        #     #     " see: ")
+        #     #     tm.show_task(to_show)
+        #     # elif due == 'f':
+        #     #     to_show = input("\nPlease enter the name of the task you would like to" \
+        #     #     " see: ")
+        #     #     tm.show_task(to_show)
+        #     elif due == 'q':
+        #         pass
+        #     else:
+        #         print("Invalid input")
+
+
+            
+        elif view == 'q':
+            pass
+        else:
+            print("Invalid input")
+
+    elif user_input == "q":
+        # Store tasks when program ends
+        tm.save_data()
+        break
         
     else:
         print("Invalid response. Please try again")

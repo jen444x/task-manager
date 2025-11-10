@@ -1,27 +1,33 @@
-from date import is_valid_date
+from date import is_valid_date, get_user_due_date
+from datetime import datetime
 
 class Task:
     """ Models a single task"""
 
     def __init__(self, name, description="", due_date=""):
         self.name = name
-        self.name_lowered = name.lower()
         self.description = description
+        # Make sure it's a datetime object
+        if due_date and type(due_date) == str:
+            # Turn into date object
+            due_date = datetime.fromisoformat(due_date).date()
+            
         self.due_date = due_date
 
+
     def get_dict(self):
+        """ Prepare dict to save into file """
+        # Save date in ISO 8601 format so json can stringify it
+        self.due_date = self.due_date.isoformat()
         return self.__dict__
     
     # edit name
-    def edit_name(self):
+    def edit_name(self, new_task_name):
         """Edit task name"""
         old_name = self.name
-        # Get new task name
-        new_task_name = input("\nPlease enter new task name: ")
-        
-        # Edit data
+     
+        # Edit name attribute
         self.name = new_task_name
-        self.name_lowered = new_task_name.lower()  
 
         # notify user
         print(f"\nTask name was changed from '{old_name}' to '{new_task_name}'.")  
@@ -32,7 +38,7 @@ class Task:
 
         old_description = self.description
         # Get new task description
-        new_description = input("\nPlease enter new task description: ")
+        new_description = input("\nPlease enter new task description: ").lower().strip()
         
         # Edit data
         self.description = new_description 
@@ -45,16 +51,7 @@ class Task:
         """Edit task due_date"""
 
         old_due_date = self.due_date
-
-        new_due_date = input("Please enter new due date (MM/DD/YYYY): ")
-
-        valid_date = is_valid_date(new_due_date)
-
-        while not valid_date:
-            new_due_date = input("Due date was invalid. " \
-            "Make sure to use the following format MM/DD/YY: ")
-
-            valid_date = is_valid_date(new_due_date)
+        new_due_date = get_user_due_date()
         
         # Edit data
         self.due_date = new_due_date 
