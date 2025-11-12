@@ -1,4 +1,3 @@
-from date import is_valid_date, get_user_due_date
 from datetime import datetime
 
 class Task:
@@ -34,25 +33,22 @@ class Task:
         print(f"\nTask name was changed from '{old_name}' to '{new_task_name}'.")  
 
     # edit description
-    def edit_description(self):
+    def edit_description(self, new_desc):
         """Edit task description"""
 
         old_description = self.description
-        # Get new task description
-        new_description = input("\nPlease enter new task description: ").lower().strip()
-        
+    
         # Edit data
-        self.description = new_description 
+        self.description = new_desc 
 
         # notify user
-        print(f"\nTask description was changed from '{old_description}' to '{new_description}'.")  
+        print(f"\nTask description was changed from '{old_description}' to '{new_desc}'.")  
 
     
-    def edit_due_date(self):
+    def edit_due_date(self, new_due_date):
         """Edit task due_date"""
 
         old_due_date = self.due_date
-        new_due_date = get_user_due_date()
         
         # Edit data
         self.due_date = new_due_date 

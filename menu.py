@@ -1,5 +1,5 @@
 from task_manager import TaskManager
-from date import get_user_due_date, tasks_due_on
+from date import get_user_due_date, get_date_obj
 # Intro
 linesplit = "--------------------------------"
 intro = "Welcome to your task manager"
@@ -54,9 +54,57 @@ while True:
         print(f"\nTask '{name}' has been successfully added.")
 
     elif user_input == "e":
-        to_edit = input("\nPlease enter the name of the task you would like to" \
+        # Get name of task they want to edit
+        t_name = input("\nPlease enter the name of the task you would like to" \
         " edit: ")
-        tm.edit_task(to_edit)
+
+        # check it exists 
+        try:
+            target_task = tm.lookup(t_name)
+        except KeyError:
+            print("\nTask was not found.")
+            continue
+
+        user_input = ""
+        while user_input != 'q':
+            # See what they want to edit
+            options = ("\nOptions:\n" \
+            "a - Name\n" \
+            "b - Description\n" \
+            "c - Due date\n\n" \
+            "q - Return\n" \
+                )
+            print(options)
+            user_input = input("What would you like to edit: ").lower().strip()
+
+            # Check if its a valid input
+            valid_inputs = {'a', 'b', 'c'}
+            if user_input not in valid_inputs:
+                print("ERROR: Invalid input\n")
+                continue
+        
+            # if it does exist, ask user what to edit
+            if user_input == "a":
+                # Get new task name
+                new_name = input("\nPlease enter new task name: ").lower().strip()
+                tm.edit_task_name(target_task, new_name)
+            elif user_input == "b":
+                # Get new task description
+                new_desc = input("\nPlease enter new task description: ") 
+                tm.edit_task_description(target_task, new_desc)
+            elif user_input == "c":
+                new_due_date = get_user_due_date()
+                tm.edit_task_due_date(target_task, new_due_date)
+
+            # Print task after update
+            print("Task:")
+            tm.show_task(target_task)
+            
+            # Ask user if they want to edit more
+            ask_again = input("\nDid you want to make any more changes? (y/n): ").lower().strip()
+            if ask_again != 'y':
+                break
+            
 
     elif user_input == "d":
         to_delete = input("\nPlease enter the name of the task you would like to" \

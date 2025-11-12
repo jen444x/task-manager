@@ -40,7 +40,7 @@ def get_date_obj(date_str):
 
 # get due date
 def get_user_due_date():
-    """ Prompt user for due date"""
+    """ Prompt user for due date until valid formatting"""
 
     due_date = input("Please enter due date (MM/DD/YYYY): ")
 

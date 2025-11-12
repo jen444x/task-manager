@@ -40,82 +40,37 @@ class TaskManager:
     # Find task
     def lookup(self, task):
         """ Find Task """
-        print(f"all: {self.tasks_dict}")
 
         # Find reference with dictionary
         return self.tasks_dict[task.lower().strip()]
 
-    # edit task
-    def edit_task(self, t_name):
-        """ Edit task """
+    def edit_task_name(self, target_task, new_task_name):
+        """ Update task name"""
+        original_name = target_task.name
 
-        # check it exists 
-        try:
-            target_task = self.lookup(t_name)
-        except KeyError:
-            print("\nTask was not found.")
-            return 
+        target_task.edit_name(new_task_name)
 
-        # See what they want to edit
-        options = ("\nOptions:\n" \
-        "a - Name\n" \
-        "b - Description\n" \
-        "c - Due date\n\n" \
-        "q - Return\n" \
-            )
+        # Create new key val pair with updated name
+        self.tasks_dict[new_task_name] = target_task
+
+        # delete old one
+        del self.tasks_dict[original_name]
+
+    def edit_task_description(self, target_task, new_task_desc):
+        """ Update task name"""
+        target_task.edit_description(new_task_desc)
+
+    def edit_task_due_date(self, target_task, new_task_date):
+        """ Update task name"""
+        # Turn date into date obj if it's a str
+        if type(new_task_date) == str:
+            # Turn into date object
+            new_task_date = get_date_obj(new_task_date)
+
+        target_task.edit_due_date(new_task_date)
         
-        print(options)
-        user_input = input("What would you like to edit: ").lower().strip()
-
-        while user_input != 'q':
-            # Check if its a valid input
-            valid_inputs = {'a', 'b', 'c'}
-            if user_input not in valid_inputs:
-                print("Invalid input")
-                return 
-        
-            # if it does exist, ask user what to edit
-            if user_input == "a":
-                # Get new task name
-                new_task_name = input("\nPlease enter new task name: ").lower().strip()
-                old_name = t_name.lower().strip()
-
-                target_task.edit_name(new_task_name)
-                
-                # Create new key val pair with updated name
-                self.tasks_dict[new_task_name] = target_task
-
-                # delete old one
-                del self.tasks_dict[old_name]
-            elif user_input == "b":
-                target_task.edit_description()
-            elif user_input == "c":
-                target_task.edit_due_date()
-
-            # Print task after update
-            print(target_task.name)
-        
-            self.show_task(target_task.name)
-                
-
-            # Ask user if they want to edit more
-            ask_again = input("\nDid you want to make any more changes? (y/n): ").lower().strip()
-            if ask_again == 'y':
-                print(options)
-                user_input = input("What would you like to edit: ").lower().strip()
-            else:
-                return 
-            
-    def show_task(self, t_name):
+    def show_task(self, task):
         """ Show one task """
-        print(f"t_name: {t_name}")
-
-        try:
-            task = self.lookup(t_name)
-        except KeyError:
-            print("Task does not exist.")
-            return
-        
         # Print data
         print(f"\nName: {task.name}")
         if task.description:
