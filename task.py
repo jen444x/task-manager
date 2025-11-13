@@ -3,15 +3,19 @@ from datetime import datetime
 class Task:
     """ Models a single task"""
 
-    def __init__(self, name, description="", due_date=""):
+    def __init__(self, name, completed = False, description="", due_date=""):
         self.name = name
+        self.completed = completed
         self.description = description
         # Make sure it's a datetime object
         if due_date and type(due_date) == str:
             # Turn into date object
             due_date = datetime.fromisoformat(due_date).date()
-            
         self.due_date = due_date
+
+    def complete_task(self):
+        """ Mark task as completed """
+        self.completed = True
 
 
     def get_dict(self):

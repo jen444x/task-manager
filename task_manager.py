@@ -71,12 +71,21 @@ class TaskManager:
         
     def show_task(self, task):
         """ Show one task """
-        # Print data
+        # Print name
         print(f"\nName: {task.name}")
+        # Description
         if task.description:
             print(f"Description: {task.description}")
+        # Due date
         if task.due_date:
             print(f"Due date: {task.due_date}")
+        # Complete status
+        print(f"Status: ", end="")
+        if task.completed:
+            print("Complete")
+        else:
+            print("Incomplete")
+
     
     def show_tasks(self, tasks):
         """ Show all tasks """
@@ -141,5 +150,8 @@ class TaskManager:
 
     def save_data(self):
         """ Saves data in file """
-        
         store_tasks(self.tasks_list)
+
+    def complete_task(self, task):
+        """ Mark task as completed """
+        task.complete_task()

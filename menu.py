@@ -13,6 +13,7 @@ dict = tm.tasks_dict
 while True:
     print(f"Options:\n"
         "a - Add task\n"
+        "c - Mark task as completed\n"
         "e - Edit task\n"
         "d - Delete task\n"
         "s - Show task(s)\n\n"
@@ -53,6 +54,21 @@ while True:
         tm.add_task(name, description, due_date)
         print(f"\nTask '{name}' has been successfully added.")
 
+    elif user_input == 'c':
+        # Get name of task they want to edit
+        t_name = input("\nPlease enter the name of the task you would like to" \
+        " complete: ")
+
+        # check it exists 
+        try:
+            target_task = tm.lookup(t_name)
+        except KeyError:
+            print("\nTask was not found.")
+            continue
+
+        tm.complete_task(target_task)
+        print("Task has been marked as completed.")
+
     elif user_input == "e":
         # Get name of task they want to edit
         t_name = input("\nPlease enter the name of the task you would like to" \
@@ -65,8 +81,8 @@ while True:
             print("\nTask was not found.")
             continue
 
-        user_input = ""
-        while user_input != 'q':
+        edit_input = ""
+        while edit_input != 'q':
             # See what they want to edit
             options = ("\nOptions:\n" \
             "a - Name\n" \
@@ -75,24 +91,24 @@ while True:
             "q - Return\n" \
                 )
             print(options)
-            user_input = input("What would you like to edit: ").lower().strip()
+            edit_input = input("What would you like to edit: ").lower().strip()
 
             # Check if its a valid input
             valid_inputs = {'a', 'b', 'c'}
-            if user_input not in valid_inputs:
+            if edit_input not in valid_inputs:
                 print("ERROR: Invalid input\n")
                 continue
         
             # if it does exist, ask user what to edit
-            if user_input == "a":
+            if edit_input == "a":
                 # Get new task name
                 new_name = input("\nPlease enter new task name: ").lower().strip()
                 tm.edit_task_name(target_task, new_name)
-            elif user_input == "b":
+            elif edit_input == "b":
                 # Get new task description
                 new_desc = input("\nPlease enter new task description: ") 
                 tm.edit_task_description(target_task, new_desc)
-            elif user_input == "c":
+            elif edit_input == "c":
                 new_due_date = get_user_due_date()
                 tm.edit_task_due_date(target_task, new_due_date)
 
@@ -124,9 +140,17 @@ while True:
         if view == 'a':
             tm.show_all_tasks()
         elif view == 'o':
-            to_show = input("\nPlease enter the name of the task you would like to" \
+            t_name = input("\nPlease enter the name of the task you would like to" \
             " see: ")
-            tm.show_task(to_show)
+
+            # check it exists 
+            try:
+                target_task = tm.lookup(t_name)
+            except KeyError:
+                print("\nTask was not found.")
+                continue
+            
+            tm.show_task(target_task)
         elif view == 'd':
             print(f"Options:\n"
             "t - Due today\n"
