@@ -43,5 +43,3 @@ def store_tasks(tasks):
     with open('user_tasks.json', 'w') as f:
         # write to file
         f.write(tasks_json)
-
-get_tasks([], {}, 'test_file.json')

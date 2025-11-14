@@ -15,7 +15,7 @@ def test_add_task_with_name(tm):
     tm.add_task(name)
         
     # Check if dict is in tasks
-    target_task = {'name': name, 'description': '', 'due_date': ''}
+    target_task = {'name': name, "completed": False, 'description': '', 'due_date': ''}
     all_tasks = tm.get_all_task_dicts()
 
     assert target_task in all_tasks
@@ -27,7 +27,7 @@ def test_add_task_with_name_desc(tm):
     tm.add_task(name, description)
         
     # Check if dict is in tasks
-    target_task = {'name': name, 'description': description, 'due_date': ''}
+    target_task = {'name': name, "completed": False, 'description': description, 'due_date': ''}
     all_tasks = tm.get_all_task_dicts()
 
     assert target_task in all_tasks
@@ -43,8 +43,13 @@ def test_add_task_with_name_desc_duedate(tm):
     # Check if dict is in tasks
     due_date_object = get_date_obj(due_date_str)    # bc dates are saved as objects
     date_formatted = due_date_object.isoformat()    # then when returend are formatted
-    target_task = {'name': name, 'description': description, 'due_date': date_formatted}
+    target_task = {'name': name, "completed": False, 'description': description, 'due_date': date_formatted}
     all_tasks = tm.get_all_task_dicts()
 
     assert target_task in all_tasks
+
+def test_store_tasks(tm):
+    """ Test store tasks function """
+
+    tm.save_data
 

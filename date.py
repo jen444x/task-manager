@@ -30,11 +30,10 @@ def get_date_obj(date_str):
     # turn each field into an int
     month, day, year = map(int, date_list)
     
-    try:
-        # create date object
-        date_obj = date(year, month, day)
-    except:
-        return None
+    
+    # create date object
+    date_obj = date(year, month, day)
+   
     
     return date_obj
 

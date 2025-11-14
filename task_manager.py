@@ -86,14 +86,16 @@ class TaskManager:
         else:
             print("Incomplete")
 
+    def sort_by_due_date(self, tasks):
+        pass
+
     
     def show_tasks(self, tasks):
         """ Show all tasks """
 
-        print("\nCurrent tasks:")
         for i, task in enumerate(tasks):
             # print name
-            print(f"{i+1}. {task.name}", end="")
+            print(f"\t{i+1}. {task.name}", end="")
             
             # print description if any
             if task.description:
@@ -111,14 +113,14 @@ class TaskManager:
                     continue
 
             if task.due_date:
-                print(f"   Due: {task.due_date}")
+                print(f"\t   Due: {task.due_date}")
 
     def show_all_tasks(self):
         """ Shows all tasks """
 
         self.show_tasks(self.tasks_list)
 
-    def show_tasks_on_date(self, date):
+    def get_tasks_on_date(self, date):
         """ Show tasks based on date """
 
         if date == 'today':
@@ -127,6 +129,13 @@ class TaskManager:
             tasks = tasks_due_on(self.tasks_list, date)
         elif date == 'future':
             tasks = tasks_due_on(self.tasks_list, date)
+
+        return tasks
+
+    def show_tasks_on_date(self, tasks):
+        """ Show tasks based on date """
+
+        self.get_tasks_on_date
 
         # Print tasks
         self.show_tasks(tasks)
@@ -155,3 +164,7 @@ class TaskManager:
     def complete_task(self, task):
         """ Mark task as completed """
         task.complete_task()
+
+    def uncomplete_task(self, task):
+        """ Mark task as completed """
+        task.uncomplete_task()

@@ -7,7 +7,7 @@ def test_instantiation_with_only_name_provided():
     
     # Get values
     task_dict = task.__dict__
-    correct_dict = {'name': task_name, 'description': '', 'due_date': ''}
+    correct_dict = {'name': task_name, 'description': '', 'due_date': '', 'completed': False}
     
     # compare
     assert task_dict == correct_dict
@@ -20,7 +20,7 @@ def test_instantiation_with_only_name_description_provided():
     
     # Get values
     task_dict = task.__dict__
-    correct_dict = {'name': task_name, 'description': task_desc, 'due_date': ''}
+    correct_dict = {'name': task_name, 'description': task_desc, 'due_date': '', 'completed': False}
     
     # compare
     assert task_dict == correct_dict

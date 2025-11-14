@@ -9,15 +9,25 @@ print(f"\n{linesplit}\n{intro.upper()}\n{linesplit}")
 tm = TaskManager('user_tasks.json')
 dict = tm.tasks_dict
 
+# Show tasks due today
+tasks_due_today = tm.get_tasks_on_date('today')
+if tasks_due_today:
+    print(f"Your current tasks due today:")
+    tm.show_tasks(tasks_due_today)
+else:
+    print("You have no tasks due today!\n")
+
+
 # Loop until user exits
 while True:
     print(f"Options:\n"
-        "a - Add task\n"
-        "c - Mark task as completed\n"
-        "e - Edit task\n"
-        "d - Delete task\n"
-        "s - Show task(s)\n\n"
-        "q - Quit\n"
+        "\ta - Add task\n"
+        "\tc - Mark task as completed\n"
+        "\tu - Undo task completion\n"
+        "\te - Edit task\n"
+        "\td - Delete task\n"
+        "\ts - Show task(s)\n\n"
+        "\tq - Quit\n"
     )
     user_input = input("Choice: ").lower().strip()
     
@@ -29,10 +39,10 @@ while True:
 
         # Option to add aditional information
         print("\nOptional information:\n" \
-        "a - Description\n" \
-        "b - Due date\n" \
-        "c - Description and due date\n" \
-        "d - None\n")
+        "\ta - Description\n" \
+        "\tb - Due date\n" \
+        "\tc - Description and due date\n" \
+        "\td - None\n")
 
         user_input = input("\nWhat information would you like to include: ").lower().strip()
         print()
@@ -69,6 +79,21 @@ while True:
         tm.complete_task(target_task)
         print("Task has been marked as completed.")
 
+    elif user_input == 'u':
+        # Get name of task they want to edit
+        t_name = input("\nPlease enter the name of the task you would like to" \
+        " mark as incomplete: ")
+
+        # check it exists 
+        try:
+            target_task = tm.lookup(t_name)
+        except KeyError:
+            print("\nTask was not found.")
+            continue
+
+        tm.uncomplete_task(target_task)
+        print("Task has been marked as incompleted.")
+
     elif user_input == "e":
         # Get name of task they want to edit
         t_name = input("\nPlease enter the name of the task you would like to" \
@@ -85,10 +110,10 @@ while True:
         while edit_input != 'q':
             # See what they want to edit
             options = ("\nOptions:\n" \
-            "a - Name\n" \
-            "b - Description\n" \
-            "c - Due date\n\n" \
-            "q - Return\n" \
+            "\ta - Name\n" \
+            "\tb - Description\n" \
+            "\tc - Due date\n\n" \
+            "\tq - Return\n" \
                 )
             print(options)
             edit_input = input("What would you like to edit: ").lower().strip()
@@ -130,10 +155,10 @@ while True:
     elif user_input == "s":
         # Ask user how to list tasks
         print(f"\nOptions:\n"
-        "a - Show all tasks\n"
-        "o - Show one task\n"
-        "d - Show tasks based on date\n\n"
-        "q - Return \n"
+        "\ta - Show all tasks\n"
+        "\to - Show one task\n"
+        "\td - Show tasks based on date\n\n"
+        "\tq - Return \n"
         )
 
         view = input("How would you like your tasks listed: ").lower().strip()
@@ -153,10 +178,10 @@ while True:
             tm.show_task(target_task)
         elif view == 'd':
             print(f"Options:\n"
-            "t - Due today\n"
-            "o - Overdue\n"
-            "f - Future due\n\n"
-            "q - Return \n"
+            "\tt - Due today\n"
+            "\to - Overdue\n"
+            "\tf - Future due\n\n"
+            "\tq - Return \n"
             )
 
             due = input("What tasks would you like to see: ").lower().strip()
